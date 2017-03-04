@@ -121,7 +121,7 @@ def deadEnd(currCoord, lastCoord, count):
     if not viable:
     	    return True
     else: 
-    	    for direction, coord in viable.items()
+    	    for direction, coord in viable.items():
     	    	if !deadEnd(coord, currCoord, count):
     	    		return False
     	    return True
