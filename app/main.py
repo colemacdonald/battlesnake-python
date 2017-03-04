@@ -94,7 +94,7 @@ def getAdjacent(point):
     adjacent['left'] = [point[0]-1, point[1]]
     adjacent['right'] = [point[0]+1, point[1]]
     return adjacent
-def getViable(adjacent)
+def getViable(adjacent):
     for direction, coord in adjacent.items():
         viable_flag = True
         if coord[0] < 0 or coord[0] > board_width - 1: #if X coord is a wall value don't include direction
@@ -111,7 +111,7 @@ def getViable(adjacent)
         if viable_flag == True: #if viable flag is still true then add direction to possible moves	    	    	    	    	    	    
 	    viable_move[direction] = coord
     return viable_move
-def deadEnd(currCoord, lastCoord, count)
+def deadEnd(currCoord, lastCoord, count):
     if count == 5: return False
     adjacent = getAdjacent(currCoord)
     viable = getViable(adjacent)
