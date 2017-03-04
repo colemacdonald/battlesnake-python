@@ -122,7 +122,7 @@ def deadEnd(currCoord, lastCoord, count):
     	    return True
     else: 
     	    for direction, coord in viable.items():
-    	    	if !deadEnd(coord, currCoord, count):
+    	    	if not deadEnd(coord, currCoord, count):
     	    		return False
     	    return True
 # Expose WSGI app (so gunicorn can find it)
