@@ -80,7 +80,7 @@ def move():
     else: #keep doing other stuff #TODO: Implement Snake behavioural AI
         for direction, coord in viable_move.items():
         	if deadEnd(coord, my_head, count = 0):
-        		viable_move.pop(direction, none)
+        		viable_move.pop(direction, None)
         	
         #pick and send move
         move = viable_move.keys()[0]
@@ -122,7 +122,7 @@ def deadEnd(currCoord, lastCoord, count):
     viable = getViable(adjacent)
     for direction, coord in viable.items():
     	    if coord == lastCoord:
-    	    	    viable.pop(direction, none)
+    	    	    viable.pop(direction, None)
     if not viable:
     	    return True
     else: 
