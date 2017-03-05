@@ -99,6 +99,7 @@ def getViable(adjacent):
     global snakes
     global board_width
     global board_height
+    viable_move = {}
     for direction, coord in adjacent.items():
         viable_flag = True
         if coord[0] < 0 or coord[0] > (board_width - 1): #if X coord is a wall value don't include direction
