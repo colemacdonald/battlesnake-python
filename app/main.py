@@ -75,7 +75,7 @@ def move():
             		target = food[i]
             	elif distance[i] < distance[i-1]:
             		target = food[i]
-             for dist in distance:
+            for dist in distance:
                 if target > dist:
                     target = dist
 	    if (my_head[0] > target[0]):    # If the food is to the left of the head
@@ -94,7 +94,6 @@ def move():
 	        if 'down' in viable_move:
 		    # Clear other viable moves
 		    viable_move = 'down'
-<<<<<<< HEAD
             
         
     else: #keep doing other stuff #TODO: Implement Snake behavioural AI
