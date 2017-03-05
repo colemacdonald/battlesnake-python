@@ -42,6 +42,7 @@ def start():
 def move():
     global board_width
     global board_height
+    global snakes
     #Get request data
     data = bottle.request.json
     my_id = data['you']
@@ -95,6 +96,7 @@ def getAdjacent(point):
     adjacent['right'] = [point[0]+1, point[1]]
     return adjacent
 def getViable(adjacent):
+    global snakes
     for direction, coord in adjacent.items():
         viable_flag = True
         if coord[0] < 0 or coord[0] > int(board_width) - 1: #if X coord is a wall value don't include direction
