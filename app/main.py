@@ -49,8 +49,8 @@ def move():
     snakes = data['snakes']
     turn = data['turn']
     food = data['food']
-    board_width = ['width']
-    board_height = ['height']
+    board_width = data['width']
+    board_height = data['height']
     #Get our snake
     for snake in snakes:
     	    if snake['id'] == my_id:
@@ -97,11 +97,13 @@ def getAdjacent(point):
     return adjacent
 def getViable(adjacent):
     global snakes
+    global board_width
+    global board_height
     for direction, coord in adjacent.items():
         viable_flag = True
-        if coord[0] < 0 or coord[0] > int(board_width) - 1: #if X coord is a wall value don't include direction
+        if coord[0] < 0 or coord[0] > (board_width - 1): #if X coord is a wall value don't include direction
 	    viable_flag = False
-        elif coord[1] < 0 or coord[1] > int(board_height) - 1: #if Y coord is a wall value don't include direction
+        elif coord[1] < 0 or coord[1] > (board_height - 1): #if Y coord is a wall value don't include direction
 	    viable_flag = False
         for snake in snakes:
 	    if viable_flag == False: #if coord == a point in previous snake then break
