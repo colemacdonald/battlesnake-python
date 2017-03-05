@@ -59,7 +59,7 @@ def move():
 	#Head coordinates and coordinates of adjacent spaces
 	my_head = my_snake['coords'][0]
     
-   	 adjacent = getAdjacent(my_head)
+   	adjacent = getAdjacent(my_head)
     
     
     	#Determine which directions are clear to move
