@@ -51,6 +51,7 @@ def move():
 	food = data['food']
 	board_width = data['width']
 	board_height = data['height']
+	kill_flag = False
 	#Get our snake
 	for snake in snakes:
 		if snake['id'] == my_id:
