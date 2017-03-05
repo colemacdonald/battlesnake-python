@@ -117,6 +117,7 @@ def getViable(adjacent):
 	    viable_move[direction] = coord
     return viable_move
 def deadEnd(currCoord, lastCoord, count):
+    count+=1
     if count == 5: return False
     adjacent = getAdjacent(currCoord)
     viable = getViable(adjacent)
