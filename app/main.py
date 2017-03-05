@@ -66,7 +66,7 @@ def move():
     	#Determine which directions are clear to move
     	viable_move = getViable(adjacent)
     
-    	if health < 50: #go get apple
+    	if health < 0: #go get apple
     		if len(food) > 0:
     			distance = []
     			target = []
@@ -102,24 +102,10 @@ def move():
         		if deadEnd(coord, my_head, count = 0):
         			viable_move.pop(direction, None)
        
-        	for snake in snakes:
-        		for direction,coord in adjacent.items():
-        			if snake['coords'][0] == coord:
-        				if len(my_snake['coord']) > len(snake['coord']):
-        					kill_flag = True
-        					saveDir = direction
-        					taunt = 'kill flag'
-        					break
-        				else:
-        					kill_flag = False
+    
 
 
-        #pick and send move
-        if kill_flag == True:
-        	if saveDir in viable_move:
-        		move = saveDir
-        	else:
-        		move = random.choice(viable_move.key())
+        move = random.choice(viable_move.key())
 
     	return {
     		'move': move,
