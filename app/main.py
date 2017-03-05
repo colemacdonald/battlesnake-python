@@ -105,7 +105,7 @@ def move():
     
 
 
-        move = random.choice(viable_move.key())
+        move = random.choice(viable_move.keys())
 
     	return {
     		'move': move,
