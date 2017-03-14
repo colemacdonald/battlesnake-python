@@ -61,7 +61,7 @@ def move():
 			health = snake['health_points']
 	#Head coordinates and coordinates of adjacent spaces
 	my_head = my_snake['coords'][0]
-	bfsINFO = BFS.doBFS(my_head, adjList)
+	bfsINFO = doBFS(my_head, adjList)
 	
    	adjacent = getAdjacent(my_head)
     
