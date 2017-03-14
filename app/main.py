@@ -45,6 +45,7 @@ def move():
 	global board_width
 	global board_height
 	global snakes
+	global adjList
 	#Get request data
 	data = bottle.request.json
 	my_id = data['you']
