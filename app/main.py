@@ -34,7 +34,8 @@ def start():
 		'color': color,
 		'taunt': taunt,
 		'head_url': head_url,
-		'name': my_name
+		'name': my_name,
+		'adjList': adjList
 	}
 
 
