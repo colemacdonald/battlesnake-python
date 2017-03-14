@@ -119,7 +119,10 @@ def move():
 
 	
 	#Pick Move
-	move = random.choice(viable_move.keys())
+	if not viable_move.keys():
+		move = 'UP'
+	else:
+		move = random.choice(viable_move.keys())
 	
 	#Response
 	return {
