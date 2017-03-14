@@ -114,7 +114,7 @@ def move():
     		'move': move,
     		'taunt': taunt
     	}
-def pointToVertex(point)
+def pointToVertex(point):
 	global board_width
 	vertex = board_width * point[1] + point[0]
 	return vertex
