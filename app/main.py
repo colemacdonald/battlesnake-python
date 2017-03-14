@@ -162,15 +162,15 @@ def createADJ(width, height):
 		if i < width:
 			if i % width == 0: adj.append([i+1, i+width])
 			elif i % width == width - 1: adj.append([i-1, i+width])
-			else: ajd.append([i-1, i+1, i+width])
+			else: adj.append([i-1, i+1, i+width])
 		elif i > ((width * height)- width - 1) and i < (width * height):
 			if i % width == 0: adj.append([i-width, i+1])
 			elif i % width == width - 1: adj.append([i-width, i-1])
-			else: ajd.append([i-width, i-1, i+1])
+			else: adj.append([i-width, i-1, i+1])
 		else:
 			if i % width == 0: adj.append([i-width, i+1, i+width])
 			elif i % width == width - 1: adj.append([i-width,i-1, i+width])
-			else: ajd.append([i-width, i-1, i+1, i+width])
+			else: adj.append([i-width, i-1, i+1, i+width])
 	return adj
 
 def doBFS(source, adjList):
