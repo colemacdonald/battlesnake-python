@@ -2,6 +2,7 @@ import bottle
 import os
 import random
 import math
+import Queue
 my_name = "elttab ekans"
 color = "#234864"
 taunt = "Get some!"
@@ -175,18 +176,16 @@ def createADJ(width, height):
 	return adj
 
 def doBFS(source, adjList):
-	queue = Queue(len(adjList))
-	bfsINFO = []
+	queue = Queue.Queue()
+	bfsINFO = [None for i in range(len(adjList))]
 	bfsINFO[source] = [0, None]
-	distance = 1
 	queue.put(source)
 	while not queue.empty():
 		parent = queue.get()
 		for neighbour in adjList[parent]:
 			if bfsINFO[neighbour] == None:
 				queue.put(neighbour)
-				bfsINFO[neighbour] = [distane,parent]
-		distance += 1
+				bfsINFO[neighbour] = [bfsINFO[parent][0]+1,parent]
 	return bfsINFO
 # Expose WSGI app (so gunicorn can find it)
 application = bottle.default_app()
