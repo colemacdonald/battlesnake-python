@@ -61,7 +61,7 @@ def move():
 			health = snake['health_points']
 	#Head coordinates and coordinates of adjacent spaces
 	my_head = my_snake['coords'][0]
-	bfsINFO = doBFS(my_head, adjList)
+	bfsINFO = doBFS(pointToVertex(my_head), adjList)
 	
    	adjacent = getAdjacent(my_head)
     
@@ -114,6 +114,10 @@ def move():
     		'move': move,
     		'taunt': taunt
     	}
+def pointToVertex(point)
+	global board_width
+	vertex = board_width * point[1] + point[0]
+	return vertex
 def getAdjacent(point):
 	adjacent = {}
 	adjacent['up'] = [point[0], point[1]-1]
