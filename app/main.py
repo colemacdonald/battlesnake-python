@@ -75,8 +75,8 @@ def move():
 	adjacent = getAdjacent(my_head)
 	
 	#Breadth first search on gameboard
-    bfsINFO = doBFS(pointToVertex(my_head), adjList)
-    
+	bfsINFO = doBFS(pointToVertex(my_head), adjList)
+	
 	#Determine which directions are clear to move
 	viable_move = getViable(adjacent)
 
