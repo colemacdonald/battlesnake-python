@@ -2,7 +2,6 @@ import bottle
 import os
 import random
 import math
-
 my_name = "elttab ekans"
 color = "#234864"
 taunt = "Get some!"
@@ -22,7 +21,8 @@ def start():
 	game_id = data['game_id']
 	board_width = data['width']
 	board_height = data['height']
-	
+	global adjList
+	adjList = createADJ(board_width, board_height)
 	head_url = '%s://%s/static/head.png' % (
 		bottle.request.urlparts.scheme,
 		bottle.request.urlparts.netloc
@@ -59,7 +59,8 @@ def move():
 			health = snake['health_points']
 	#Head coordinates and coordinates of adjacent spaces
 	my_head = my_snake['coords'][0]
-    
+	bfsINFO = BFS.doBFS(my_head, adjList)
+	
    	adjacent = getAdjacent(my_head)
     
     
@@ -155,6 +156,37 @@ def deadEnd(currCoord, lastCoord, count):
 				return False
 		return True
 
+def createADJ(width, height):
+	adj = []
+	for i in range(0, width*height):
+		if i < width:
+			if i % width == 0: adj[i] = [i+1, i+width]
+			elif i % width == width - 1: adj[i] = [i-1, i+width]
+			else: ajd[i] = [i-1, i+1, i+width]
+		elif i > ((width * height)- width - 1) and i < (width * height):
+			if i % width == 0: adj[i] = [i-width, i+1]
+			elif i % width == width - 1: adj[i] = [i-width, i-1]
+			else: ajd[i] = [i-width, i-1, i+1]
+		else:
+			if i % width == 0: adj[i] = [i-width, i+1, i+width]
+			elif i % width == width - 1: adj[i] = [i-width,i-1, i+width]
+			else: ajd[i] = [i-width, i-1, i+1, i+width]
+	return adj
+
+def doBFS(source, adjList):
+	queue = Queue(len(adjList))
+	bfsINFO = []
+	bfsINFO[source] = [0, None]
+	distance = 1
+	queue.put(source)
+	while not queue.empty():
+		parent = queue.get()
+		for neighbour in adjList[parent]:
+			if bfsINFO[neighbour] == None:
+				queue.put(neighbour)
+				bfsINFO[neighbour] = [distane,parent]
+		distance += 1
+	return bfsINFO
 # Expose WSGI app (so gunicorn can find it)
 application = bottle.default_app()
 if __name__ == '__main__':
