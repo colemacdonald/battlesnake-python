@@ -1,4 +1,5 @@
 import random
+import math
 
 # contains some utility functions for getting information about the board / potential moves
 
@@ -80,3 +81,39 @@ def find_safe_move(data):
         directions.remove(d)
     
     return 'up'
+
+def need_food(data):
+    me = data['you']
+    health = me['health']
+    #closest_food = find_food()
+    closest_food = { 
+        'x':1, 
+        'y':1
+    }
+    distance_to_food = closest_food['x'] + closest_food['y']
+    print("***************")
+    print(distance_to_food)
+    print(health)
+    if health < distance_to_food:
+        return True
+    else:
+         return False
+
+def get_food(data, direction):
+    #direction = find_safe_move(data)
+    closest_food = {
+        'x': 1, 
+        'y': 1
+    }
+    me = data['you']
+
+    head = me['body'][0]
+    new_head = convert_move_to_new_head(head, direction)
+
+    head_to_food = head - closest_food
+    move_to_food = new_head - closest_food
+    if (move_to_food <= head_to_food):
+        return direction
+    else: 
+        get_food(data, find_safe_move(data))
+

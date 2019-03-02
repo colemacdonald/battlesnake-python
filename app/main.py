@@ -51,9 +51,10 @@ def start():
 @bottle.post('/move')
 def move():
     data = bottle.request.json
+    need_food_state = util.need_food(data)
+    print("need food state is")
+    print(need_food_state)
     print(data)
-    #sideDist = getBoard()
-    find_walls(data)
     """
     TODO: Using the data from the endpoint request object, your
             snake AI must choose a direction to move in.
