@@ -58,7 +58,7 @@ def move():
     """
 
     directions = ['up', 'down', 'left', 'right']
-    direction = util.find_safe_move(data)
+    direction = util.find_safe_move(data, 1)
 
     print(direction)
     return move_response(direction)
