@@ -58,12 +58,7 @@ def move():
     """
 
     directions = ['up', 'down', 'left', 'right']
-    direction = random.choice(directions)
-    tries = 0
-    while util.is_snake(direction, data) or util.is_wall(direction, data):
-        tries += 1
-        if tries == 4: break
-        direction = random.choice(directions)
+    direction = util.find_safe_move(data)
 
     print(direction)
     return move_response(direction)
