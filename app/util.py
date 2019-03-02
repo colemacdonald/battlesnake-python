@@ -3,6 +3,9 @@ import math
 
 # contains some utility functions for getting information about the board / potential moves
 
+from operator import itemgetter, attrgetter, methodcaller 
+
+
 def is_same_space(space1, space2):
     return (space1['x'] == space2['x'] and space1['y'] == space2['y'])
 
@@ -135,7 +138,6 @@ def sort_food(game, food_locations):
     for food in food_locations: 
         dist = abs(cur_head['x'] - food['x']) + abs(cur_head['y'] - food['y'])		
         food['dist'] = dist	
-		
-    print(food_locations)
+    return food_locations
 	
 	
