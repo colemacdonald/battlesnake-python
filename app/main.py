@@ -2,7 +2,7 @@ import bottle
 import os
 import random
 import math
-import Queue
+import Queue as queue
 my_name = "elttab ekans"
 color = "#234864"
 taunt = "Get some!"
