@@ -33,11 +33,25 @@ def is_snake(move, game):
                 return True
 
     return False
-    
-def find_food(board):
-    print("pipi")
+	
+def cur_head(game):
+    me = game['you']
+    cur_head = me['body'][0]
+    return cur_head	
+	
+def find_food(game):
+
     food_locations = game['board']['food']
-    print("pipi")
     print(food_locations)
 	
     return food_locations
+	
+def sort_food(game, food_locations):
+    cur_head = game['you']['body'][0]
+    for food in food_locations: 
+        dist = abs(cur_head['x'] - food['x']) + abs(cur_head['y'] - food['y'])		
+        food['dist'] = dist	
+		
+    print(food_locations)
+	
+	
