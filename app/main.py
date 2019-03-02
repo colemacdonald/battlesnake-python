@@ -64,19 +64,7 @@ def move():
     board = data['board']
 
     directions = ['up', 'down', 'left', 'right']
-    direction = random.choice(directions)
-
-    health = get_health(you)
-    if health < LOW_HEALTH_THRESHOLD:
-      food = find_food(board)
-      direction = get_direction_to_point(get_head(you), food[0])
-    else:
-      direction = get_direction_to_open_space(get_head(you))
-
-
-    while not util.is_snake(direction, data):
-        direction = random.choice(directions)
-
+    direction = util.find_safe_move(data)
 
     print(direction)
     return move_response(direction)
