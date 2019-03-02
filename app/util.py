@@ -3,6 +3,8 @@
 def is_same_space(space1, space2):
     return space1['x'] == space2['x'] and space1['y'] == space2['y']
 
+def get_head(you):
+    return you['body'][0]
 
 def convert_move_to_new_head(cur_head, move):
     if move == 'up':
@@ -30,6 +32,15 @@ def is_snake(move, data):
                 return True
 
     return False
+
+def get_health(you):
+    return you['health']
     
 def find_food(board):
     return []
+
+def get_direction_to_point(starting_point, goal_point):
+    return 'UP'
+
+def get_direction_to_open_space(starting_point):
+    return 'UP'

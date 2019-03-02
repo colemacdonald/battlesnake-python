@@ -2,6 +2,7 @@ import json
 import os
 import random
 import bottle
+from util import *
 import util
 
 from api import ping_response, start_response, move_response, end_response
@@ -57,8 +58,21 @@ def move():
             snake AI must choose a direction to move in.
     """
 
+    LOW_HEALTH_THRESHOLD = 50
+
+    you = data['you']
+    board = data['board']
+
     directions = ['up', 'down', 'left', 'right']
     direction = random.choice(directions)
+
+    health = get_health(you)
+    if health < LOW_HEALTH_THRESHOLD:
+      food = find_food(board)
+      direction = get_direction_to_point(get_head(you), food[0])
+    else:
+      direction = get_direction_to_open_space(get_head(you))
+
 
     while not util.is_snake(direction, data):
         direction = random.choice(directions)
