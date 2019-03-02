@@ -31,3 +31,5 @@ def is_snake(move, data):
 
     return False
     
+def find_food(board):
+    return []
