@@ -94,8 +94,9 @@ def move():
                     
             if direction is not None:
                 break
-        if direction is None:
-            direction = find_safe_move(data)
+                
+    if direction is None:
+        direction = find_safe_move(data)
 
     print(direction)
     add_move_to_history(direction)
