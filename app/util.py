@@ -88,15 +88,21 @@ def find_safe_move(data):
 def need_food(data):
     me = data['you']
     health = me['health']
-    #closest_food = find_food()
-    closest_food = { 
-        'x':1, 
-        'y':1
-    }
+    food = find_food(data)
+    sorted_food = sort_food(data, food)
+    min_dist = 100
+    i = 0
+    index_min = 0
+    for foods in sorted_food:
+        print(foods['dist'])
+        if foods['dist'] < min_dist:
+            min_dist = foods['dist']
+            index_min = i
+        i = i+1
+
+    closest_food = sorted_food[index_min]
     distance_to_food = closest_food['x'] + closest_food['y']
-    print("***************")
-    print(distance_to_food)
-    print(health)
+    
     if health < distance_to_food:
         return True
     else:
@@ -137,7 +143,8 @@ def sort_food(game, food_locations):
     cur_head = game['you']['body'][0]
     for food in food_locations: 
         dist = abs(cur_head['x'] - food['x']) + abs(cur_head['y'] - food['y'])		
-        food['dist'] = dist	
+        food['dist'] = dist			
+    print(food_locations)
     return food_locations
-	
+
 	
