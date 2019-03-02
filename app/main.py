@@ -4,7 +4,10 @@ import random
 import bottle
 import app.util as util
 
+
 from api import ping_response, start_response, move_response, end_response
+import util
+
 
 @bottle.route('/')
 def index():
@@ -56,7 +59,8 @@ def move():
     TODO: Using the data from the endpoint request object, your
             snake AI must choose a direction to move in.
     """
-
+    find_food = util.find_food(data)
+    sort_food = util.sort_food(data, find_food)
     directions = ['up', 'down', 'left', 'right']
     direction = util.find_safe_move(data, 1)
 

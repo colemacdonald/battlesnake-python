@@ -3,6 +3,9 @@ import copy
 
 # contains some utility functions for getting information about the board / potential moves
 
+from operator import itemgetter, attrgetter, methodcaller 
+
+
 def is_same_space(space1, space2):
     return (space1['x'] == space2['x'] and space1['y'] == space2['y'])
 
@@ -33,6 +36,26 @@ def is_snake(move, data):
                 return True
 
     return False
+	
+def cur_head(game):
+    me = game['you']
+    cur_head = me['body'][0]
+    return cur_head	
+	
+def find_food(game):
+
+    food_locations = game['board']['food']
+    print(food_locations)
+	
+    return food_locations
+	
+def sort_food(game, food_locations):
+    cur_head = game['you']['body'][0]
+    for food in food_locations: 
+        dist = abs(cur_head['x'] - food['x']) + abs(cur_head['y'] - food['y'])		
+        food['dist'] = dist	
+    return food_locations
+
 
 
 def is_wall(move, data):
