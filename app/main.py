@@ -62,7 +62,7 @@ def move():
             snake AI must choose a direction to move in.
     """
 
-    LOW_HEALTH_THRESHOLD = 50
+    LOW_HEALTH_THRESHOLD = 70
 
     you = data['you']
     board = data['board']
@@ -72,11 +72,18 @@ def move():
     move_history = get_move_history()
     last_move = None
 
-    if False:
-        # go to find food
-        find_food = find_food(data)
-        sort_food = sort_food(data, find_food)
-    else:
+    if need_food(data):
+        pos_direction = get_food(data, get_head(you))
+
+        if pos_direction['x_dir'] is not None:
+            if is_move_safe(pos_direction['x_dir'], data):
+                direction = pos_direction['x_dir']
+
+        if pos_direction['y_dir'] is not None:
+            if is_move_safe(pos_direction['y_dir'], data):
+                direction = pos_direction['y_dir']
+    
+    if direction is None:
         # move towards an open space
 
         quadrants = get_adjacent_quadrant_densities(get_head(you), data)

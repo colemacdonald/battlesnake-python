@@ -155,7 +155,7 @@ def find_safe_move(data, epoch=1):
     
     return 'up'
 
-def need_food(data):
+def find_closest_food(data):
     me = data['you']
     health = me['health']
     food = find_food(data)
@@ -171,6 +171,13 @@ def need_food(data):
         i = i+1
 
     closest_food = sorted_food[index_min]
+    return closest_food
+
+def need_food(data):
+    me = data['you']
+    health = me['health']
+    closest_food = find_closest_food(data)
+
     distance_to_food = closest_food['x'] + closest_food['y']
     
     if health < distance_to_food:
@@ -178,24 +185,32 @@ def need_food(data):
     else:
          return False
 
-def get_food(data, direction):
-    #direction = find_safe_move(data)
-    closest_food = {
-        'x': 1, 
-        'y': 1
-    }
+def get_food(data, cur_pos):
+    closest_food = find_closest_food(data)
     me = data['you']
 
     head = me['body'][0]
-    new_head = convert_move_to_new_head(head, direction)
 
-    head_to_food = head - closest_food
-    move_to_food = new_head - closest_food
-    if (move_to_food <= head_to_food):
-        return direction
-    else: 
-        get_food(data, find_safe_move(data))
+    pos_direction = { }
+    
+    x_dist = abs(cur_pos['x'] - closest_food['x'])
+    y_dist = abs(cur_pos['y'] - closest_food['y'])
 
+    if cur_pos['x'] == closest_food['x']:
+        pos_direction['x_dir'] = None
+    elif cur_pos['x'] > closest_food['x']:
+        pos_direction['x_dir'] = 'left'
+    else:
+        pos_direction['x_dir'] = 'right'
+
+    if cur_pos['y'] == closest_food['y']:
+        pos_direction['y_dir'] = None
+    elif cur_pos['y'] > closest_food['y']:
+        pos_direction['y_dir'] = 'up'
+    else:
+        pos_direction['y_dir'] = 'down'
+    
+    return pos_direction
 	
 def cur_head(game):
     me = game['you']
