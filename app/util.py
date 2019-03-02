@@ -22,6 +22,7 @@ def is_snake(move, data):
     board = data['board']
     snakes = board['snakes']
     me = data['you']
+    snakes.append(me)
 
     cur_head = me['body'][0]
     new_head = convert_move_to_new_head(cur_head, move)
@@ -63,8 +64,7 @@ def find_safe_move(data, epoch=1):
     # check safe directions
     while len(safe_directions) > 0:
         d = random.choice(safe_directions)
-        dead_end = is_dead_end(d, data, 5)
-        print('Turn %d, move: %s. Is dead end? %s' % (data['turn'], d, dead_end))
+        dead_end = is_dead_end(d, data, 10)
         if not is_wall(d, data) and not is_snake(d, data) and not dead_end:
             return d
 
@@ -92,9 +92,6 @@ def is_dead_end(move, data, epoch=1):
         return len(safe_directions) == 0
     else:
         dead_end = True
-        print("Epoch: %d" % epoch)
-        print(safe_directions)
-        print(data_copy['you']['body'])
         for sd in safe_directions:
             dead_end = dead_end and is_dead_end(sd, data_copy, epoch-1)
 
