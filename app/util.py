@@ -34,3 +34,25 @@ def is_snake(move, game):
 
     return False
     
+def find_walls(data):
+    #the last available space before death is x number away
+    #board size
+    width = data['board']['width']
+    height = data['board']['height']
+
+    #where my head is 
+    me = data['you']
+    head = me['body'][0]
+
+    #find dist to walls
+    walls_dist = { 
+        'up':head['y'],
+        'down':height - head['y'] - 1,
+        'left':head['x'],
+        'right':width - head['x'] - 1
+    }
+    print(walls_dist)
+    return walls_dist
+
+
+    

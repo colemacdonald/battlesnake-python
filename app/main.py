@@ -2,6 +2,7 @@ import json
 import os
 import random
 import bottle
+from util import find_walls
 
 from api import ping_response, start_response, move_response, end_response
 
@@ -50,7 +51,9 @@ def start():
 @bottle.post('/move')
 def move():
     data = bottle.request.json
-
+    print(data)
+    #sideDist = getBoard()
+    find_walls(data)
     """
     TODO: Using the data from the endpoint request object, your
             snake AI must choose a direction to move in.
