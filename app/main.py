@@ -34,6 +34,8 @@ def ping():
 def start():
     data = bottle.request.json
 
+    print(data)	
+
     """
     TODO: If you intend to have a stateful snake AI,
             initialize your snake state here using the
@@ -48,6 +50,8 @@ def start():
 @bottle.post('/move')
 def move():
     data = bottle.request.json
+
+    print(data)
 
     """
     TODO: Using the data from the endpoint request object, your
