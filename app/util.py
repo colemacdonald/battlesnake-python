@@ -1,17 +1,30 @@
 import random
+import pdb
+import copy
+from queue import Queue
 
+MAX_MOVE_HISTORY = 100
+move_history = []
+
+def add_move_to_history(move):
+    move_history.insert(0, move)
+    if len(move_history) > MAX_MOVE_HISTORY:
+        move_history.pop()
+
+def get_move_history():
+    global move_history
+    return move_history
 # contains some utility functions for getting information about the board / potential moves
 
-
 def get_quadrant_size(board):
-    if board.width < 10:
-        return 2
-    if board.width < 15:
-        return 3
-    if board.width < 20:
+    if board['width'] < 10:
         return 4
-    else:
+    if board['width'] < 15:
+        return 4
+    if board['width'] < 20:
         return 5
+    else:
+        return 6
 
 def is_same_space(space1, space2):
     return (space1['x'] == space2['x'] and space1['y'] == space2['y'])
@@ -39,9 +52,12 @@ def is_snake(move, data):
     print('Turn %d, head is at: %d, %d' % (data['turn'], cur_head['x'], cur_head['y']))
     new_head = convert_move_to_new_head(cur_head, move)
 
+    return is_snake_space(new_head, board, snakes)
+
+def is_snake_space(point, board, snakes):
     for snake in snakes:
         for square in snake['body']:
-            if is_same_space(new_head, square):
+            if is_same_space(point, square):
                 return True
 
     return False
@@ -69,22 +85,42 @@ def is_wall(move, data):
     cur_head = me['body'][0]
     new_head = convert_move_to_new_head(cur_head, move)
 
-    if new_head['x'] <= -1 or new_head['x'] >= width or new_head['y'] <= -1 or new_head['y'] => height:
-        return True
-    
-    return False
+    return is_wall_space(new_head, width, height)
 
+def is_wall_space(point, board_width, board_height):
+    if point['x'] <= -1 or point['x'] >= board_width or point['y'] <= -1 or point['y'] >= board_height:
+        return True
+    else:
+        return False
+    
 
 def find_safe_move(data):
     directions = ['up', 'down', 'right', 'left']
 
     while len(directions) > 0:
         d = random.choice(directions)
-        if not is_wall(d, data) and not is_snake(d, data):
+        # if not is_wall(d, data) and not is_snake(d, data):
+        if not is_snake(d, data):
+        
             return d
         directions.remove(d)
     
     return 'up'
+
+def is_move_safe(move, data):
+    return is_point_safe(convert_move_to_new_head(get_head(data["you"]), move), data)
+
+def is_point_safe(point, data):
+    board = data["board"]
+    snakes = board["snakes"]
+    if is_snake_space(point, board, snakes):
+        # print("point ", point, " is a snake space")
+        return False
+    elif is_wall_space(point, board["width"], board["height"]):
+        # print("point ", point, " is a wall space")
+        return False
+    else:
+        return True
 
 def get_adjacent_quadrant_densities(starting_point, data):
     board = data['board']
@@ -93,31 +129,32 @@ def get_adjacent_quadrant_densities(starting_point, data):
     quad_size = get_quadrant_size(board)
     # define a quadrant by it's top left and bottom right corners
     top_left_quad = { 
-        top_left: { 'x': starting_point['x'] - quad_size, 'y': starting_point['y'] - quad_size },
-        bottom_right: { starting_point }
+        'top_left': { 'x': starting_point['x'] - quad_size, 'y': starting_point['y'] - quad_size },
+        'bottom_right': { 'x': starting_point['x'], 'y': starting_point['y'] }
     }
     top_right_quad = {
-        top_left: { 'x': starting_point['x'], 'y': starting_point['y'] - quad_size },
-        bottom_right: { 'x': starting_point[x] + quad_size, starting_point['y'] }
+        'top_left': { 'x': starting_point['x'], 'y': starting_point['y'] - quad_size },
+        'bottom_right': { 'x': starting_point['x'] + quad_size, 'y': starting_point['y'] }
     }
     bottom_left_quad = { 
-        top_left: { 'x': starting_point['x'] - quad_size, 'y': starting_point['y'] },
-        bottom_right: { 'x': starting_point['x'], starting_point['y'] + quad_size }
+        'top_left': { 'x': starting_point['x'] - quad_size, 'y': starting_point['y'] },
+        'bottom_right': { 'x': starting_point['x'], 'y': starting_point['y'] + quad_size }
     }
     bottom_right_quad = { 
-        top_left: { 'x': starting_point['x'], 'y': starting_point['y'] },
-        bottom_right: { 'x': starting_point['x'] + quad_size, 'y': starting_point['y'] + quad_size}
+        'top_left': { 'x': starting_point['x'], 'y': starting_point['y'] },
+        'bottom_right': { 'x': starting_point['x'] + quad_size, 'y': starting_point['y'] + quad_size}
     }
 
-    quad_densities = {
-        "top_left": get_quadrant_density(top_left, quad_size, data),
-        "top_right": get_quadrant_density(top_right, quad_size, data),
-        "bottom_left": get_quadrant_density(bottom_left, quad_size, data),
-        "bottom_right": get_quadrant_density(bottom_right, quad_size, data),
-    }
+    quadrant_densities = [
+        { "id": "top_left", "density": get_quadrant_density(top_left_quad, quad_size, data) },
+        { "id": "top_right", "density": get_quadrant_density(top_right_quad, quad_size, data) },
+        { "id": "bottom_left", "density": get_quadrant_density(bottom_left_quad, quad_size, data) },
+        { "id": "bottom_right", "density": get_quadrant_density(bottom_right_quad, quad_size, data) }
+    ]
 
-    return quad_densities
-    
+    quadrant_densities.sort(key=lambda x: x['density'])
+
+    return quadrant_densities
 
 def get_quadrant_density(quadrant, quad_size, data):
     num_quad_squares = quad_size * quad_size
@@ -127,9 +164,17 @@ def get_quadrant_density(quadrant, quad_size, data):
     for x in range(top_left['x'], bottom_right['x']):
         for y in range(top_left['y'], bottom_right['y']):
             point = {'x': x,'y': y}
-            if is_snake(point, data) or is_wall(point, data):
+            if is_snake_space(point, data['board'], data['board']['snakes']) or is_wall_space(point, data['board']['width'], data['board']['height']):
                 full_squares += 1
     return full_squares / num_quad_squares
                 
 
-
+def get_quadrant_moves(quadrant):
+    if quadrant["id"] == "top_left":
+        return ["left", "up"]
+    elif quadrant["id"] == "top_right":
+        return ["right", "up"]
+    elif quadrant["id"] == "bottom_left":
+        return ["down", "left"]
+    else:
+        return ["down", "right"]
