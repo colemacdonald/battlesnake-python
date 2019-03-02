@@ -15,21 +15,18 @@ def convert_move_to_new_head(cur_head, move):
         return {'x': cur_head['x'] - 1, 'y': cur_head['y']}
 
 
-def is_snake(move, game):
-    # board data
-    width = game['board']['width']
-    height = game['board']['height']
-
+def is_snake(move, data):
     # snakes
-    snakes = game['snakes']
-    me = game['you']
+    board = data['board']
+    snakes = board['snakes']
+    me = data['you']
 
     cur_head = me['body'][0]
     new_head = convert_move_to_new_head(cur_head, move)
 
     for snake in snakes:
         for square in snake['body']:
-            if is_same_space(new_head):
+            if is_same_space(new_head, square):
                 return True
 
     return False

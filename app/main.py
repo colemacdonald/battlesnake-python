@@ -2,6 +2,7 @@ import json
 import os
 import random
 import bottle
+import util
 
 from api import ping_response, start_response, move_response, end_response
 
@@ -58,6 +59,11 @@ def move():
 
     directions = ['up', 'down', 'left', 'right']
     direction = random.choice(directions)
+
+    while not util.is_snake(direction, data):
+        direction = random.choice(directions)
+
+
     print(direction)
     return move_response(direction)
 
