@@ -64,6 +64,12 @@ def is_snake_space(point, board, snakes):
         for square in snake['body']:
             if is_same_space(point, square):
                 return True
+                
+        head = get_head(snake)
+        if len(snake['body']) > len(board['you']['body']):
+            for d in ['right', 'left', 'up', 'down']:
+                if is_same_space(convert_move_to_new_head(head, d)):
+                    return True
 
     return False
     
