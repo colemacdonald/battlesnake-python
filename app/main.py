@@ -5,9 +5,7 @@ import bottle
 import app.util as util
 
 
-from api import ping_response, start_response, move_response, end_response
-import util
-
+from app.api import ping_response, start_response, move_response, end_response
 
 @bottle.route('/')
 def index():
