@@ -2,10 +2,9 @@ import json
 import os
 import random
 import bottle
-import app.util as util
-
-
-from app.api import ping_response, start_response, move_response, end_response
+from api import *
+from util import *
+from random import shuffle
 
 @bottle.route('/')
 def index():
@@ -57,12 +56,49 @@ def move():
     TODO: Using the data from the endpoint request object, your
             snake AI must choose a direction to move in.
     """
-    find_food = util.find_food(data)
-    sort_food = util.sort_food(data, find_food)
+
+    LOW_HEALTH_THRESHOLD = 50
+
+    you = data['you']
+    board = data['board']
+
     directions = ['up', 'down', 'left', 'right']
-    direction = util.find_safe_move(data, 1)
+    direction = None
+    move_history = get_move_history()
+    last_move = None
+
+    if False:
+        # go to find food
+        find_food = find_food(data)
+        sort_food = sort_food(data, find_food)
+    else:
+        # move towards an open space
+
+        quadrants = get_adjacent_quadrant_densities(get_head(you), data)
+
+        if len(move_history) > 0:
+            last_move = move_history[0]
+        for quadrant in quadrants:
+            pos_moves = get_quadrant_moves(quadrant)
+            shuffle(pos_moves)
+            # print("Quadrant %s, density %f" % (quadrant["id"], quadrant["density"]))
+            if last_move in pos_moves:
+                if is_move_safe(last_move, data):
+                    direction = last_move
+                    break
+            else:
+                for move in pos_moves:
+                    if is_move_safe(move, data):
+                        direction = move
+                        break
+                    
+            if direction is not None:
+                break
+        if direction is None:
+            direction = find_safe_move(data)
 
     print(direction)
+    add_move_to_history(direction)
     return move_response(direction)
 
 
