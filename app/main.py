@@ -2,8 +2,10 @@ import json
 import os
 import random
 import bottle
+import util
 
 from api import ping_response, start_response, move_response, end_response
+from util import find_food
 
 @bottle.route('/')
 def index():
@@ -49,7 +51,9 @@ def start():
 
 @bottle.post('/move')
 def move():
+    print("pipi")
     data = bottle.request.json
+    find_food = find_food(board)
 
     """
     TODO: Using the data from the endpoint request object, your

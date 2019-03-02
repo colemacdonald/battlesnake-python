@@ -35,4 +35,9 @@ def is_snake(move, game):
     return False
     
 def find_food(board):
-    return []
+    print("pipi")
+    food_locations = game['board']['food']
+    print("pipi")
+    print(food_locations)
+	
+    return food_locations
