@@ -45,7 +45,7 @@ def start():
             request's data if necessary.
     """
 
-    color = "#00FF00"
+    color = "#9D17B5"
 
     return start_response(color)
 
