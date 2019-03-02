@@ -199,7 +199,7 @@ def createADJ(width, height):
 #Returns bfsInfo on board given current head position. 
 #bfsINFO = [(distance from source), (parent)]
 def doBFS(source, adjList):
-	queue = Queue.Queue()
+	queue = Queue()
 	bfsINFO = [None for i in range(len(adjList))]
 	bfsINFO[source] = [0, None]
 	queue.put(source)
