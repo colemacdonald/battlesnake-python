@@ -3,8 +3,11 @@ import os
 import random
 import bottle
 
+
 from api import ping_response, start_response, move_response, end_response
 import util
+
+
 @bottle.route('/')
 def index():
     return '''
