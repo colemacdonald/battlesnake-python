@@ -16,7 +16,6 @@ def convert_move_to_new_head(cur_head, move):
 
 
 def is_snake(move, data):
-    # snakes
     board = data['board']
     snakes = board['snakes']
     me = data['you']
@@ -51,5 +50,18 @@ def find_walls(data):
     print(walls_dist)
     return walls_dist
 
-
+def is_wall(move, data):
+    board = data['board']
     
+    width = board['width']
+    height = board['height']
+    me = data['you']
+
+
+    cur_head = me['body'][0]
+    new_head = convert_move_to_new_head(cur_head, move)
+
+    if new_head['x'] == -1 or new_head['x'] == width or new_head['y'] == -1 or new_head['y'] == height:
+        return True
+    
+    return False
