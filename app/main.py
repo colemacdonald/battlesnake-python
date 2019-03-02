@@ -2,6 +2,7 @@ import json
 import os
 import random
 import bottle
+import util
 
 
 from api import ping_response, start_response, move_response, end_response
@@ -61,7 +62,8 @@ def move():
     find_food = util.find_food(data)
     sort_food = util.sort_food(data, find_food)
     directions = ['up', 'down', 'left', 'right']
-    direction = random.choice(directions)
+    direction = util.find_safe_move(data, 1)
+
     print(direction)
     return move_response(direction)
 
