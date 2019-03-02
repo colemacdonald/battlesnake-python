@@ -2,8 +2,8 @@ import json
 import os
 import random
 import bottle
-from api import *
-from util import *
+from app.api import *
+from app.util import *
 from random import shuffle
 
 @bottle.route('/')
