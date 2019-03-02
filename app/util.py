@@ -1,7 +1,9 @@
 import random
+from operator import itemgetter, attrgetter, methodcaller 
 import pdb
 import copy
 from queue import Queue
+import copy
 
 MAX_MOVE_HISTORY = 100
 move_history = []
@@ -26,6 +28,7 @@ def get_quadrant_size(board):
     else:
         return 6
 
+
 def is_same_space(space1, space2):
     return (space1['x'] == space2['x'] and space1['y'] == space2['y'])
 
@@ -47,9 +50,9 @@ def is_snake(move, data):
     board = data['board']
     snakes = board['snakes']
     me = data['you']
+    snakes.append(me)
 
     cur_head = me['body'][0]
-    print('Turn %d, head is at: %d, %d' % (data['turn'], cur_head['x'], cur_head['y']))
     new_head = convert_move_to_new_head(cur_head, move)
 
     return is_snake_space(new_head, board, snakes)
@@ -64,9 +67,25 @@ def is_snake_space(point, board, snakes):
 
 def get_health(you):
     return you['health']
-    
-def find_food(board):
-    return []
+	
+def cur_head(game):
+    me = game['you']
+    cur_head = me['body'][0]
+    return cur_head	
+	
+def find_food(game):
+
+    food_locations = game['board']['food']
+    print(food_locations)
+	
+    return food_locations
+	
+def sort_food(game, food_locations):
+    cur_head = game['you']['body'][0]
+    for food in food_locations: 
+        dist = abs(cur_head['x'] - food['x']) + abs(cur_head['y'] - food['y'])		
+        food['dist'] = dist	
+    return food_locations
 
 def get_direction_to_point(starting_point, goal_point):
     return 'UP'
@@ -94,25 +113,36 @@ def is_wall_space(point, board_width, board_height):
         return False
     
 
-def find_safe_move(data):
+def find_safe_move(data, epoch=1):
     directions = ['up', 'down', 'right', 'left']
+    safe_directions = []
 
-    while len(directions) > 0:
-        d = random.choice(directions)
-        # if not is_wall(d, data) and not is_snake(d, data):
-        if not is_snake(d, data):
-        
+    # find safe directions
+    for d in directions:
+        if not is_wall(d, data) and not is_snake(d, data):
+            safe_directions.append(d)    
+
+    # check safe directions
+    while len(safe_directions) > 0:
+        d = random.choice(safe_directions)
+        dead_end = is_dead_end(d, data, 10)
+        if not is_wall(d, data) and not is_snake(d, data) and not dead_end:
             return d
-        directions.remove(d)
+
+        safe_directions.remove(d)
     
     return 'up'
 
 def is_move_safe(move, data):
+    dead_end = is_dead_end(move, data, 10)
+    if dead_end:
+        return False
     return is_point_safe(convert_move_to_new_head(get_head(data["you"]), move), data)
 
 def is_point_safe(point, data):
     board = data["board"]
     snakes = board["snakes"]
+
     if is_snake_space(point, board, snakes):
         # print("point ", point, " is a snake space")
         return False
@@ -178,3 +208,30 @@ def get_quadrant_moves(quadrant):
         return ["down", "left"]
     else:
         return ["down", "right"]
+    
+   
+def is_dead_end(move, data, epoch=1):
+    directions = ['up', 'down', 'right', 'left']
+    safe_directions = []
+
+    # add move to body
+    data_copy = copy.deepcopy(data)
+    data_copy['you']['body'].insert(0, convert_move_to_new_head(data_copy['you']['body'][0], move))
+
+
+    # find safe directions
+    for d in directions:
+        if not is_wall(d, data_copy) and not is_snake(d, data_copy):
+            safe_directions.append(d)
+    
+    # end of recursion
+    if epoch == 0 or len(safe_directions) == 0:
+        return len(safe_directions) == 0
+    else:
+        dead_end = True
+        for sd in safe_directions:
+            dead_end = dead_end and is_dead_end(sd, data_copy, epoch-1)
+
+
+        # check all safe directions to see if they are safe
+        return dead_end

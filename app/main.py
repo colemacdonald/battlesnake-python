@@ -6,7 +6,10 @@ from util import *
 import util
 from random import shuffle
 
+
 from api import ping_response, start_response, move_response, end_response
+import util
+
 
 @bottle.route('/')
 def index():
@@ -65,32 +68,39 @@ def move():
     board = data['board']
 
     directions = ['up', 'down', 'left', 'right']
-
-    quadrants = get_adjacent_quadrant_densities(get_head(you), data)
-
     direction = None
     move_history = get_move_history()
     last_move = None
-    if len(move_history) > 0:
-        last_move = move_history[0]
-    for quadrant in quadrants:
-        pos_moves = get_quadrant_moves(quadrant)
-        shuffle(pos_moves)
-        # print("Quadrant %s, density %f" % (quadrant["id"], quadrant["density"]))
-        if last_move in pos_moves:
-            if is_move_safe(last_move, data):
-                direction = last_move
-                break
-        else:
-            for move in pos_moves:
-                if is_move_safe(move, data):
-                    direction = move
+
+    if False:
+        # go to find food
+        find_food = util.find_food(data)
+        sort_food = util.sort_food(data, find_food)
+    else:
+        # move towards an open space
+
+        quadrants = get_adjacent_quadrant_densities(get_head(you), data)
+
+        if len(move_history) > 0:
+            last_move = move_history[0]
+        for quadrant in quadrants:
+            pos_moves = get_quadrant_moves(quadrant)
+            shuffle(pos_moves)
+            # print("Quadrant %s, density %f" % (quadrant["id"], quadrant["density"]))
+            if last_move in pos_moves:
+                if is_move_safe(last_move, data):
+                    direction = last_move
                     break
-                
-        if direction is not None:
-            break
-    if direction is None:
-        direction = util.find_safe_move(data)
+            else:
+                for move in pos_moves:
+                    if is_move_safe(move, data):
+                        direction = move
+                        break
+                    
+            if direction is not None:
+                break
+        if direction is None:
+            direction = util.find_safe_move(data)
 
     print(direction)
     add_move_to_history(direction)
